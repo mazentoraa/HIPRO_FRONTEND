@@ -1,0 +1,1 @@
+// This file is for shared types (what data looks like)
