@@ -23,7 +23,7 @@ import { useSidebar } from "@/components/layout/SidebarContext";
 const navItems = [
   { title: "Tableau de bord", icon: LayoutDashboard, path: "/dashboard" },
   { title: "Clients", icon: Users, path: "/clients" },
-  { title: "Entraîneurs", icon: GraduationCap, path: "/trainers" },
+  { title: "Formateurs", icon: GraduationCap, path: "/trainers" },
   { title: "Sessions", icon: CalendarDays, path: "/sessions" },
   { title: "Présences", icon: ClipboardCheck, path: "/attendance" },
   { title: "Paiements", icon: CreditCard, path: "/payments" },

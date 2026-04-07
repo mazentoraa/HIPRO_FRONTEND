@@ -81,6 +81,28 @@ export function ClientList() {
       className: "hidden xl:table-cell text-[#64748B] font-light",
     },
     {
+      header: "Programme",
+      accessorKey: "program",
+      className: "hidden md:table-cell text-[#1E293B] font-medium",
+    },
+    {
+      header: "Présence",
+      className: "hidden lg:table-cell",
+      cell: (client: IClient) => (
+        <div className="flex items-center gap-3">
+          <div className="w-24 h-2 bg-slate-100 rounded-full overflow-hidden shrink-0">
+            <div 
+              className="h-full bg-[#2563EB] rounded-full transition-all duration-1000"
+              style={{ width: `${client.attendance || 0}%` }}
+            />
+          </div>
+          <span className="text-[14px] font-medium text-slate-500 min-w-[35px]">
+            {client.attendance || 0}%
+          </span>
+        </div>
+      ),
+    },
+    {
       header: "Paiement",
       className: "hidden md:table-cell",
       cell: (client: IClient) => (

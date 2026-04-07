@@ -1,16 +1,15 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Loader2, Plus, X, Calendar, ChevronDown } from "lucide-react";
+import { Loader2, ChevronDown, X } from "lucide-react";
 
 import { IClient } from "../types/client";
 import { useCreateClient, useUpdateClient } from "../hooks/useClients";
-import { Button } from "@/components/ui/button";
 import {
     Dialog,
     DialogContent,
-    DialogHeader,
     DialogTitle,
+    DialogDescription,
 } from "@/components/ui/dialog";
 
 interface ClientFormModalProps {
@@ -26,7 +25,6 @@ export function ClientFormModal({ isOpen, onClose, initialData }: ClientFormModa
 
     const isLoading = createMutation.isPending || updateMutation.isPending;
 
-    const [showSecondParent, setShowSecondParent] = useState(false);
     const [formData, setFormData] = useState<Partial<IClient>>({
         first_name: "", last_name: "", phone: "", email: "", is_minor: false,
         date_of_birth: "", gender: "Non spécifié", blood_type: "Inconnu",
@@ -38,7 +36,6 @@ export function ClientFormModal({ isOpen, onClose, initialData }: ClientFormModa
     useEffect(() => {
         if (initialData) {
             setFormData(initialData);
-            setShowSecondParent(!!initialData.second_parent_name);
         } else {
             setFormData({
                 first_name: "", last_name: "", phone: "", email: "", is_minor: false,
@@ -47,7 +44,6 @@ export function ClientFormModal({ isOpen, onClose, initialData }: ClientFormModa
                 second_parent_name: "", second_parent_relation: "", second_parent_phone: "", second_parent_email: "",
                 payment_status: "En attente"
             });
-            setShowSecondParent(false);
         }
     }, [initialData, isOpen]);
 
@@ -67,148 +63,263 @@ export function ClientFormModal({ isOpen, onClose, initialData }: ClientFormModa
 
     return (
         <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-            <DialogContent className="w-[60vw] max-w-none p-0 bg-white border-none shadow-[0_20px_80px_rgba(0,0,0,0.1)] rounded-[2.5rem] overflow-hidden">
-                <div className="max-h-[92vh] overflow-y-auto custom-scrollbar">
-                    {/* Header: Éclatant & Espacé */}
-                    <div className="px-14 pt-14 pb-8 flex items-start justify-between border-b border-slate-50">
-                        <div className="space-y-1.5">
-                            <DialogTitle className="text-[34px] font-medium tracking-tight text-[#0F172A]">
-                                {isEdit ? "Modifier le profil" : "Ajouter un client"}
-                            </DialogTitle>
-                            <p className="text-[17px] text-slate-400 font-normal">
-                                {isEdit ? `Synchronisation des données pour ${formData.first_name} ${formData.last_name}` : "Formulaire complet d'enregistrement des nouveaux clients."}
-                            </p>
-                        </div>
+            <DialogContent
+                className="w-full max-w-2xl p-0 bg-white border border-gray-100 shadow-2xl rounded-2xl overflow-hidden"
+                style={{ fontFamily: "'Inter', sans-serif" }}
+            >
+                {/* Close button */}
+                <button
+                    onClick={onClose}
+                    className="absolute top-5 right-5 z-10 p-1.5 rounded-full hover:bg-gray-100 transition-colors text-gray-400 hover:text-gray-600"
+                >
+                    <X className="w-5 h-5" />
+                </button>
+
+                <div className="max-h-[90vh] overflow-y-auto">
+                    {/* Header */}
+                    <div className="px-8 pt-8 pb-6">
+                        <DialogTitle className="text-[22px] font-semibold text-gray-900 leading-tight">
+                            {isEdit ? "Modifier le client" : "Ajouter un nouveau client"}
+                        </DialogTitle>
+                        <DialogDescription className="text-[14px] text-gray-400 mt-1 font-normal">
+                            {isEdit
+                                ? `Mettre à jour les détails pour ${formData.first_name} ${formData.last_name}`
+                                : "Remplissez les détails pour enregistrer un nouveau client."}
+                        </DialogDescription>
                     </div>
 
-                    <form onSubmit={handleSubmit} className="px-14 py-12 space-y-14">
-                        {/* Section: INFORMATIONS PERSONNELLES - 3 COLONNES */}
-                        <div className="space-y-10">
-                            <h3 className="text-[14px] font-medium uppercase tracking-[0.3em] text-slate-300">Matrice de données personnelles</h3>
+                    <form onSubmit={handleSubmit} className="px-8 pb-8 space-y-8">
 
-                            <div className="grid grid-cols-3 gap-x-12 gap-y-10">
-                                <FormInput label="Prénom" asterisk>
-                                    <Input name="first_name" value={formData.first_name} onChange={handleChange} placeholder="Prénom" required />
-                                </FormInput>
-                                <FormInput label="Nom" asterisk>
-                                    <Input name="last_name" value={formData.last_name} onChange={handleChange} placeholder="Nom de famille" required />
-                                </FormInput>
-                                <FormInput label="Âge" asterisk>
-                                    <Input name="age" type="number" value={formData.age || ""} onChange={handleChange} placeholder="ex: 12" required />
-                                </FormInput>
-                                <FormInput label="Date de naissance">
-                                    <Input name="date_of_birth" type="date" value={formData.date_of_birth || ""} onChange={handleChange} />
-                                </FormInput>
-                                <FormInput label="Genre">
-                                    <Select name="gender" value={formData.gender || "Non spécifié"} onChange={handleChange}>
-                                        <option value="Non spécifié">Sélectionner</option>
+                        {/* INFORMATIONS PERSONNELLES */}
+                        <div className="space-y-5">
+                            <SectionTitle>Informations Personnelles</SectionTitle>
+
+                            {/* Row 1: Nom Complet + Âge */}
+                            <div className="grid grid-cols-2 gap-5">
+                                <FormField label="Nom Complet" required>
+                                    <TextInput
+                                        name="first_name"
+                                        value={formData.first_name || ""}
+                                        onChange={handleChange}
+                                        placeholder="ex: Sarah Johnson"
+                                        required
+                                    />
+                                </FormField>
+                                <FormField label="Âge" required>
+                                    <TextInput
+                                        name="age"
+                                        type="number"
+                                        value={(formData as any).age || ""}
+                                        onChange={handleChange}
+                                        placeholder="ex: 12"
+                                        required
+                                    />
+                                </FormField>
+                            </div>
+
+                            {/* Row 2: Date de Naissance + Genre */}
+                            <div className="grid grid-cols-2 gap-5">
+                                <FormField label="Date de naissance">
+                                    <TextInput
+                                        name="date_of_birth"
+                                        type="date"
+                                        value={formData.date_of_birth || ""}
+                                        onChange={handleChange}
+                                    />
+                                </FormField>
+                                <FormField label="Genre">
+                                    <SelectInput
+                                        name="gender"
+                                        value={formData.gender || "Non spécifié"}
+                                        onChange={handleChange}
+                                    >
+                                        <option value="Non spécifié">Sélectionner le genre</option>
                                         <option value="Féminin">Féminin</option>
                                         <option value="Masculin">Masculin</option>
-                                    </Select>
-                                </FormInput>
-                                <FormInput label="Programme" asterisk>
-                                    <Select name="program" value={formData.program || ""} onChange={handleChange} required>
+                                    </SelectInput>
+                                </FormField>
+                            </div>
+
+                            {/* Row 3: Statut de Paiement + Programme */}
+                            <div className="grid grid-cols-2 gap-5">
+
+                                <FormField label="Programme" required>
+                                    <SelectInput
+                                        name="program"
+                                        value={(formData as any).program || ""}
+                                        onChange={handleChange}
+                                        required
+                                    >
                                         <option value="">Choisir un programme</option>
                                         <option value="Natation">Natation</option>
                                         <option value="Mathématiques">Mathématiques</option>
                                         <option value="Yoga">Yoga</option>
-                                        <option value="Karaté">Karaté</option>
-                                    </Select>
-                                </FormInput>
+                                        <option value="Art">Art</option>
+                                    </SelectInput>
+                                </FormField>
 
-                                <FormInput label="Statut de Paiement" asterisk>
-                                    <Select name="payment_status" value={formData.payment_status || "En attente"} onChange={handleChange}>
+                                <FormField label="Statut de Paiement" required>
+                                    <SelectInput
+                                        name="payment_status"
+                                        value={formData.payment_status || "En attente"}
+                                        onChange={handleChange}
+                                    >
                                         <option value="Payé">Payé</option>
                                         <option value="En attente">En attente</option>
-                                        <option value="Retard">Retard</option>
-                                    </Select>
-                                </FormInput>
+                                        <option value="Retard">En retard</option>
+                                    </SelectInput>
+                                </FormField>
                             </div>
                         </div>
 
-                        {/* Section: CONTACT */}
-                        <div className="space-y-10">
-                            <h3 className="text-[14px] font-medium uppercase tracking-[0.3em] text-slate-300">Contact & Accessibilité</h3>
-                            <div className="grid grid-cols-2 gap-x-12 gap-y-10">
-                                <FormInput label="Email Principal" >
-                                    <Input name="email" type="email" value={formData.email} onChange={handleChange} placeholder="email@exemple.com" />
-                                </FormInput>
-                                <FormInput label="Téléphone Mobile">
-                                    <Input name="phone" value={formData.phone} onChange={handleChange} placeholder="+XX X XX XX XX" />
-                                </FormInput>
+                        {/* CONTACT */}
+                        <div className="space-y-5">
+                            <SectionTitle>Contact</SectionTitle>
+                            <div className="grid grid-cols-2 gap-5">
+                                <FormField label="Email">
+                                    <TextInput
+                                        name="email"
+                                        type="email"
+                                        value={formData.email || ""}
+                                        onChange={handleChange}
+                                        placeholder="email@exemple.com"
+                                    />
+                                </FormField>
+                                <FormField label="Téléphone">
+                                    <TextInput
+                                        name="phone"
+                                        value={formData.phone || ""}
+                                        onChange={handleChange}
+                                        placeholder="+XX X XX XX XX"
+                                    />
+                                </FormField>
                             </div>
                         </div>
 
-                        {/* Section: PARENT / TUTEUR */}
-                        <div className="space-y-10">
-                            <div className="flex items-center justify-between pb-4 border-b border-slate-50">
-                                <h3 className="text-[14px] font-medium uppercase tracking-[0.3em] text-slate-300">Protocole de Tutelle</h3>
+                        {/* PARENT / TUTEUR */}
+                        <div className="space-y-5">
+                            <div className="flex items-center justify-between">
+                                <SectionTitle>Parent / Tuteur</SectionTitle>
                                 <button
                                     type="button"
                                     onClick={() => setFormData(prev => ({ ...prev, is_minor: !prev.is_minor }))}
-                                    className={`text-[13px] font-medium px-8 py-3 rounded-full border transition-all ${formData.is_minor ? 'bg-[#0F172A] text-white border-[#0F172A]' : 'bg-slate-50 text-slate-400 border-slate-200'}`}
+                                    className={`text-[12px] font-medium px-4 py-1.5 rounded-full border transition-all ${formData.is_minor
+                                        ? "bg-gray-900 text-white border-gray-900"
+                                        : "bg-white text-gray-400 border-gray-200 hover:border-gray-300"
+                                        }`}
                                 >
-                                    {formData.is_minor ? "MINEUR ACTIVÉ" : "ACTIVER MINEUR"}
+                                    {formData.is_minor ? "Mineur: ACTIVER" : "Mineur: DÉSACTIVER"}
                                 </button>
                             </div>
 
                             {formData.is_minor && (
-                                <div className="space-y-12 pt-4 animate-in fade-in slide-in-from-bottom-2">
-                                    {/* Premier Parent */}
-                                    <div className="grid grid-cols-3 gap-x-12 gap-y-10">
-                                        <FormInput label="1er Parent" asterisk>
-                                            <Input name="first_parent_name" value={formData.first_parent_name || ""} onChange={handleChange} placeholder="Nom du tuteur légal" required />
-                                        </FormInput>
-                                        <FormInput label="Relation">
-                                            <Select name="first_parent_relation" value={formData.first_parent_relation || ""} onChange={handleChange}>
-                                                <option value="">Sélectionner</option>
+                                <div className="space-y-5 animate-in fade-in slide-in-from-bottom-1 duration-200">
+                                    {/* Parent 1 */}
+                                    <div className="grid grid-cols-2 gap-5">
+                                        <FormField label="Nom Complet">
+                                            <TextInput
+                                                name="first_parent_name"
+                                                value={formData.first_parent_name || ""}
+                                                onChange={handleChange}
+                                                placeholder="Nom complet du tuteur"
+                                            />
+                                        </FormField>
+                                        <FormField label="Relation">
+                                            <SelectInput
+                                                name="first_parent_relation"
+                                                value={formData.first_parent_relation || ""}
+                                                onChange={handleChange}
+                                            >
+                                                <option value="">Sélectionner la relation</option>
                                                 <option value="Mère">Mère</option>
                                                 <option value="Père">Père</option>
                                                 <option value="Autre">Autre</option>
-                                            </Select>
-                                        </FormInput>
-                                        <FormInput label="Téléphone" asterisk>
-                                            <Input name="first_parent_phone" value={formData.first_parent_phone || ""} onChange={handleChange} placeholder="+XX X XX XX XX" required />
-                                        </FormInput>
+                                            </SelectInput>
+                                        </FormField>
+                                        <FormField label="Téléphone">
+                                            <TextInput
+                                                name="first_parent_phone"
+                                                value={formData.first_parent_phone || ""}
+                                                onChange={handleChange}
+                                                placeholder="+XX X XX XX XX"
+                                            />
+                                        </FormField>
+                                        <FormField label="Email">
+                                            <TextInput
+                                                name="first_parent_email"
+                                                type="email"
+                                                value={formData.first_parent_email || ""}
+                                                onChange={handleChange}
+                                                placeholder="parent@exemple.com"
+                                            />
+                                        </FormField>
                                     </div>
 
-                                    {/* Deuxième Parent */}
-                                    <div className="grid grid-cols-3 gap-x-12 gap-y-10">
-                                        <FormInput label="2ème Parent">
-                                            <Input name="second_parent_name" value={formData.second_parent_name || ""} onChange={handleChange} placeholder="Nom du tuteur secondaire" />
-                                        </FormInput>
-                                        <FormInput label="Relation">
-                                            <Select name="second_parent_relation" value={formData.second_parent_relation || ""} onChange={handleChange}>
-                                                <option value="">Sélectionner</option>
-                                                <option value="Mère">Mère</option>
-                                                <option value="Père">Père</option>
-                                                <option value="Autre">Autre</option>
-                                            </Select>
-                                        </FormInput>
-                                        <FormInput label="Téléphone">
-                                            <Input name="second_parent_phone" value={formData.second_parent_phone || ""} onChange={handleChange} placeholder="+XX X XX XX XX" />
-                                        </FormInput>
+                                    {/* Divider */}
+                                    <div className="border-t border-dashed border-gray-100 pt-4">
+                                        <p className="text-[12px] text-gray-400 mb-4 font-medium uppercase tracking-widest">Second Tuteur (optionnel)</p>
+                                        <div className="grid grid-cols-2 gap-5">
+                                            <FormField label="Nom Complet">
+                                                <TextInput
+                                                    name="second_parent_name"
+                                                    value={formData.second_parent_name || ""}
+                                                    onChange={handleChange}
+                                                    placeholder="Nom complet du tuteur"
+                                                />
+                                            </FormField>
+                                            <FormField label="Relation">
+                                                <SelectInput
+                                                    name="second_parent_relation"
+                                                    value={formData.second_parent_relation || ""}
+                                                    onChange={handleChange}
+                                                >
+                                                    <option value="">Sélectionner la relation</option>
+                                                    <option value="Mère">Mère</option>
+                                                    <option value="Père">Père</option>
+                                                    <option value="Autre">Autre</option>
+                                                </SelectInput>
+                                            </FormField>
+                                            <FormField label="Téléphone">
+                                                <TextInput
+                                                    name="second_parent_phone"
+                                                    value={formData.second_parent_phone || ""}
+                                                    onChange={handleChange}
+                                                    placeholder="+XX X XX XX XX"
+                                                />
+                                            </FormField>
+                                            <FormField label="Email">
+                                                <TextInput
+                                                    name="second_parent_email"
+                                                    type="email"
+                                                    value={formData.second_parent_email || ""}
+                                                    onChange={handleChange}
+                                                    placeholder="parent@exemple.com"
+                                                />
+                                            </FormField>
+                                        </div>
                                     </div>
                                 </div>
                             )}
                         </div>
 
-                        {/* Footer: Actions Équilibrées */}
-                        <div className="flex items-center justify-end gap-10 pt-10 border-t border-slate-50">
+                        {/* Footer Actions */}
+                        <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-100">
                             <button
                                 type="button"
                                 onClick={onClose}
-                                className="text-[17px] font-medium text-slate-300 hover:text-slate-500 transition-colors"
+                                className="px-5 py-2.5 text-[14px] font-medium text-gray-500 hover:text-gray-800 rounded-lg hover:bg-gray-50 transition-colors"
                             >
                                 Annuler
                             </button>
-                            <Button
+                            <button
                                 type="submit"
                                 disabled={isLoading}
-                                className="h-10 px-10 rounded-full bg-[#0F172A] hover:bg-slate-800 text-white font-medium text-[17px] min-w-[240px] transition-all shadow-lg shadow-slate-100"
+                                className="px-6 py-2.5 rounded-lg bg-gray-900 hover:bg-gray-700 text-white font-medium text-[14px] min-w-[160px] flex items-center justify-center transition-colors"
                             >
-                                {isLoading ? <Loader2 className="h-6 w-6 animate-spin" /> : (isEdit ? "Mettre à jour" : "Enregistrer le client")}
-                            </Button>
+                                {isLoading
+                                    ? <Loader2 className="h-4 w-4 animate-spin" />
+                                    : (isEdit ? "Enregistrer" : "Ajouter le client")}
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -217,36 +328,58 @@ export function ClientFormModal({ isOpen, onClose, initialData }: ClientFormModa
     );
 }
 
-function FormInput({ label, children, asterisk = false }: { label: string; children: React.ReactNode; asterisk?: boolean }) {
+/* ─── Sub-components ─────────────────────────────── */
+
+function SectionTitle({ children }: { children: React.ReactNode }) {
     return (
-        <div className="space-y-3.5">
-            <label className="text-[16px] font-medium text-[#0F172A] ml-1 flex items-center gap-1.5 leading-none">
-                {label} {asterisk && <span className="text-red-500 text-[12px]">*</span>}
+        <h3 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-400">
+            {children}
+        </h3>
+    );
+}
+
+function FormField({ label, children, required = false }: { label: string; children: React.ReactNode; required?: boolean }) {
+    return (
+        <div className="flex flex-col gap-1.5">
+            <label className="text-[13px] font-medium text-gray-700 leading-none">
+                {label} {required && <span className="text-red-400">*</span>}
             </label>
             {children}
         </div>
     );
 }
 
-function Input({ className = "", ...props }: React.InputHTMLAttributes<HTMLInputElement>) {
+function TextInput({ className = "", ...props }: React.InputHTMLAttributes<HTMLInputElement>) {
     return (
         <input
             {...props}
-            className={`w-full h-12 bg-[#F8FAFC] border-none rounded-full px-8 text-[15px] text-[#0F172A] placeholder:text-slate-300 placeholder:italic focus:outline-none focus:ring-2 focus:ring-[#0F172A]/5 transition-all outline-none ${className}`}
+            className={`
+                w-full h-11 bg-gray-50 border border-gray-100 rounded-xl px-4
+                text-[14px] text-gray-900 placeholder:text-gray-300
+                focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-gray-200
+                transition-all
+                \${className}
+            `}
         />
     );
 }
 
-function Select({ children, ...props }: React.SelectHTMLAttributes<HTMLSelectElement>) {
+function SelectInput({ children, className = "", ...props }: React.SelectHTMLAttributes<HTMLSelectElement>) {
     return (
         <div className="relative">
             <select
                 {...props}
-                className="w-full h-12 bg-[#F8FAFC] border-none rounded-full px-8 text-[15px] text-[#0F172A] focus:outline-none focus:ring-2 focus:ring-[#0F172A]/5 transition-all appearance-none cursor-pointer outline-none"
+                className={`
+                    w-full h-11 bg-gray-50 border border-gray-100 rounded-xl px-4 pr-10
+                    text-[14px] text-gray-900 appearance-none cursor-pointer
+                    focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-gray-200
+                    transition-all
+                    \${className}
+                `}
             >
                 {children}
             </select>
-            <ChevronDown className="absolute right-6 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-300 pointer-events-none" />
+            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
         </div>
     );
 }

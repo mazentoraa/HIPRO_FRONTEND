@@ -13,6 +13,7 @@ export interface IClient {
   // UX Fields (Optional in backend but used in UI)
   age?: number | null;
   payment_status?: string | null;
+  attendance?: number | null;
   date_of_birth?: string | null;
   gender?: string | null;
   blood_type?: string | null;
