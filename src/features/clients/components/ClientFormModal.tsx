@@ -27,7 +27,7 @@ export function ClientFormModal({ isOpen, onClose, initialData }: ClientFormModa
 
     const [formData, setFormData] = useState<Partial<IClient>>({
         first_name: "", last_name: "", phone: "", email: "", is_minor: false,
-        date_of_birth: "", gender: "Non spécifié", blood_type: "Inconnu",
+        date_of_birth: "", gender: "Non spécifié",
         first_parent_name: "", first_parent_relation: "", first_parent_phone: "", first_parent_email: "",
         second_parent_name: "", second_parent_relation: "", second_parent_phone: "", second_parent_email: "",
         payment_status: "En attente"
@@ -39,7 +39,7 @@ export function ClientFormModal({ isOpen, onClose, initialData }: ClientFormModa
         } else {
             setFormData({
                 first_name: "", last_name: "", phone: "", email: "", is_minor: false,
-                date_of_birth: "", gender: "Non spécifié", blood_type: "Inconnu",
+                date_of_birth: "", gender: "Non spécifié",
                 first_parent_name: "", first_parent_relation: "", first_parent_phone: "", first_parent_email: "",
                 second_parent_name: "", second_parent_relation: "", second_parent_phone: "", second_parent_email: "",
                 payment_status: "En attente"
@@ -67,14 +67,6 @@ export function ClientFormModal({ isOpen, onClose, initialData }: ClientFormModa
                 className="w-full max-w-2xl p-0 bg-white border border-gray-100 shadow-2xl rounded-2xl overflow-hidden"
                 style={{ fontFamily: "'Inter', sans-serif" }}
             >
-                {/* Close button */}
-                <button
-                    onClick={onClose}
-                    className="absolute top-5 right-5 z-10 p-1.5 rounded-full hover:bg-gray-100 transition-colors text-gray-400 hover:text-gray-600"
-                >
-                    <X className="w-5 h-5" />
-                </button>
-
                 <div className="max-h-[90vh] overflow-y-auto">
                     {/* Header */}
                     <div className="px-8 pt-8 pb-6">

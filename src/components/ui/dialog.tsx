@@ -70,7 +70,7 @@ function DialogContent({
             <button
               className="absolute top-4 right-4 p-2 hover:bg-slate-100 rounded-full transition-colors"
             >
-              <XIcon className="h-5 w-5 text-slate-400" />
+              <XIcon className="h-5 w-5 text-gray-900" />
               <span className="sr-only">Close</span>
             </button>
           </DialogPrimitive.Close>

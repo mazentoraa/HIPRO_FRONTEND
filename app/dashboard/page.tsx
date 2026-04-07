@@ -16,9 +16,11 @@ import {
   AlertCircle,
 } from "lucide-react";
 
+import { useState } from "react";
 import { StatsCard } from "@/components/shared/StatsCard";
 import { StatusBadge } from "@/components/shared/StatusBadge";
 import { Button } from "@/components/ui/button";
+import { ClientFormModal } from "@/features/clients/components/ClientFormModal";
 
 import {
   BarChart,
@@ -81,7 +83,7 @@ const recentActivity = [
   },
   {
     icon: UserCheck,
-    text: "Entraîneur Mark assigné au Yoga",
+    text: "Formateur Mark assigné au Yoga",
     time: "il y a 1 heure",
     type: "neutral" as const,
   },
@@ -114,7 +116,7 @@ const upcomingSessions = [
   },
   {
     name: "Yoga — Adultes",
-    trainer: "Entraîneur Lina",
+    trainer: "Formateur Lina",
     time: "14:00",
     capacity: "6/10",
   },
@@ -127,6 +129,8 @@ const upcomingSessions = [
 ];
 
 export default function DashboardPage() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <div className="animate-fade-in space-y-4 p-4 bg-[#F8FAFC] min-h-screen px-8">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -145,7 +149,11 @@ export default function DashboardPage() {
             Planning
           </Button>
 
-          <Button variant="accent" className="gap-2 h-12 px-6">
+          <Button
+            variant="accent"
+            className="gap-2 h-12 px-6"
+            onClick={() => setIsModalOpen(true)}
+          >
             <Plus className="h-4 w-4" />
             Ajouter un client
           </Button>
@@ -163,7 +171,7 @@ export default function DashboardPage() {
         />
 
         <StatsCard
-          title="Entraîneurs Actifs"
+          title="Formateurs Actifs"
           value="32"
           change="+3 ce trimestre"
           changeType="positive"
@@ -388,6 +396,11 @@ export default function DashboardPage() {
           </div>
         </div>
       </div>
+
+      <ClientFormModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 }

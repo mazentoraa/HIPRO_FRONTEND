@@ -16,11 +16,10 @@ function getGreeting() {
 
 export function TopBar() {
   const { setMobileOpen } = useSidebar();
+  const { user } = useAuth();
   const [dark, setDark] = useState(false);
-  const { user } = useAuth(); // Utiliser le vrai nom de l'utilisateur
 
   useEffect(() => {
-    // Vérifier les préférences à l'initialisation
     const isDark =
       localStorage.getItem("theme") === "dark" ||
       (!localStorage.getItem("theme") && window.matchMedia("(prefers-color-scheme: dark)").matches);
@@ -34,6 +33,22 @@ export function TopBar() {
   }, []);
 
   const toggleTheme = () => {
+    // Désactiver les transitions temporairement pour un changement instantané
+    const css = document.createElement("style");
+    css.type = "text/css";
+    css.appendChild(
+      document.createTextNode(
+        `* {
+           -webkit-transition: none !important;
+           -moz-transition: none !important;
+           -o-transition: none !important;
+           -ms-transition: none !important;
+           transition: none !important;
+        }`
+      )
+    );
+    document.head.appendChild(css);
+
     const newDark = !dark;
     setDark(newDark);
 
@@ -44,8 +59,11 @@ export function TopBar() {
       document.documentElement.classList.remove("dark");
       localStorage.setItem("theme", "light");
     }
-  };
 
+    // Forcer un recalcul et supprimer le style pour restaurer les transitions normales
+    window.getComputedStyle(css).opacity;
+    document.head.removeChild(css);
+  };
   return (
     <header className="h-16 border-b border-border bg-card/80 backdrop-blur-sm flex items-center px-2 md:px-4 gap-4 sticky top-0 z-30">
       <Button

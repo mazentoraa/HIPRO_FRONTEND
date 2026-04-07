@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, useEffect, Suspense } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Button } from '../../../components/ui/button';
-import { Input } from '../../../components/ui/input';
-import { Label } from '../../../components/ui/label';
-import { useToast } from '../../../lib/hooks/use-toast';
-import { useAuth } from '../../../lib/hooks/useAuth';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { useToast } from '@/lib/hooks/use-toast';
+import { useAuth } from '@/features/auth/hooks/useAuth';
 import {
   Zap,
   MousePointerClick,
@@ -24,14 +24,14 @@ import {
 
 const features = [
   { icon: Zap, label: 'Automatisation', color: 'text-amber-400' },
-  { icon: MousePointerClick, label: "Facilité d'utilisation", color: 'text-emerald-400' },
+  { icon: MousePointerClick, label: 'Facilité d\'utilisation', color: 'text-emerald-400' },
   { icon: Globe, label: 'En ligne', color: 'text-sky-400' },
   { icon: BarChart3, label: 'Analytique & Stats', color: 'text-violet-400' },
   { icon: Settings2, label: 'Personnalisable', color: 'text-rose-400' },
   { icon: Users, label: 'Collaboratif', color: 'text-orange-400' },
 ];
 
-function LoginContent() {
+export function LoginView() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -93,29 +93,29 @@ function LoginContent() {
           {/* Logo */}
           <div className="mb-12">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-14 h-14 rounded-xl bg-accent flex items-center justify-center shadow-lg">
-                <Sparkles className="w-8 h-8 text-accent-foreground" />
+              <div className="w-14 h-14 rounded-xl bg-[#FB9600] hover:bg-[#E68A00] flex items-center justify-center">
+                <Sparkles className="w-6 h-6 text-accent-foreground" />
               </div>
               <div>
-                <h1 className="text-3xl font-bold text-sidebar-foreground">HIPRO</h1>
-                <span className="text-accent font-semibold text-xl">Training Center Management System</span>
+                <h1 className="text-3xl font-bold text-primary-foreground">Torazen</h1>
+                <span className="text-accent font-semibold">Pro</span>
               </div>
             </div>
             <p className="text-sidebar-foreground/80 text-lg max-w-md">
-              Votre solution de gestion complète pour votre activité avec simplicité et efficacité.
+              Votre solution ERP complète pour gérer votre business avec simplicité et efficacité.
             </p>
           </div>
 
           {/* Features Grid */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-2 ">
             {features.map((feature, index) => (
               <div
                 key={feature.label}
-                className="flex items-center gap-3 p-4 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 transition-all duration-300 hover:bg-white/10 hover:scale-105"
+                className="flex items-center w-60 h-12 gap-3 p-4 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 transition-all duration-300 hover:bg-white/10 hover:scale-105"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 <feature.icon className={`w-5 h-5 ${feature.color}`} />
-                <span className="text-sidebar-foreground text-sm font-medium">{feature.label}</span>
+                <span className="text-sidebar-foreground  text-sm font-medium">{feature.label}</span>
               </div>
             ))}
           </div>
@@ -140,12 +140,12 @@ function LoginContent() {
           {/* Mobile Logo */}
           <div className="lg:hidden mb-10 text-center">
             <div className="flex items-center justify-center gap-3 mb-3">
-              <div className="w-12 h-12 rounded-xl bg-accent flex items-center justify-center">
-                <Sparkles className="w-6 h-6 text-accent-foreground" />
+              <div className="w-14 h-14 rounded-xl bg-accent flex items-center justify-center shadow-lg">
+                <Sparkles className="w-8 h-8 text-accent-foreground" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-foreground">Torazen</h1>
-                <span className="text-accent font-semibold text-lg">Training Center Management System</span>
+                <h1 className="text-3xl font-bold text-primary-foreground">Torazen</h1>
+                <span className="text-accent font-semibold">Pro</span>
               </div>
             </div>
           </div>
@@ -219,20 +219,19 @@ function LoginContent() {
 
             <Button
               type="submit"
-              className="w-full h-12 bg-accent hover:bg-accent/90 text-accent-foreground font-bold text-base gap-2 group shadow-lg shadow-accent/20 transition-all active:scale-[0.98]"
+              className="w-full h-[43px] bg-[#FB9600] hover:bg-[#E68A00] text-[#01142A]  text-lg rounded-[8px] transition-all duration-300 active:scale-[0.98] border-none shadow-none flex items-center justify-center gap-3"
               disabled={isLoading}
-              variant="accent"
             >
               {isLoading ? (
-                <span className="flex items-center gap-2">
-                  <div className="w-5 h-5 border-2 border-accent-foreground/30 border-t-accent-foreground rounded-full animate-spin" />
-                  Connexion...
-                </span>
+                <div className="flex items-center gap-2">
+                  <div className="w-5 h-5 border-2 border-[#01142A]/30 border-t-[#01142A] rounded-full animate-spin" />
+                  <span>Connexion...</span>
+                </div>
               ) : (
-                <>
-                  Se connecter
+                <div className="flex items-center gap-3">
+                  <span>Se connecter</span>
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </>
+                </div>
               )}
             </Button>
           </form>
@@ -269,13 +268,5 @@ function LoginContent() {
         </div>
       </div>
     </div>
-  );
-}
-
-export function LoginView() {
-  return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-background text-foreground">Chargement...</div>}>
-      <LoginContent />
-    </Suspense>
   );
 }

@@ -1,53 +1,39 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  /* -- Thème Torazen Premium (Navy & Pure Gold #FFD700) -- */
-  /* -- Thème Torazen Premium (Navy & Sun Gold #D9A019) -- */
-  --color-background: #ffffff;
-  --color-foreground: #0f172a;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
 
-  --color-primary: #0f172a; 
-  --color-primary-foreground: #ffffff;
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
 
-  --color-accent: #D9A019; 
-  --color-accent-foreground: #ffffff;
-
-  --color-secondary: #f8fafc;
-  --color-secondary-foreground: #0f172a;
-
-  --color-muted: #f1f5f9;
-  --color-muted-foreground: #64748b;
-
-  --color-destructive: #e11d48;
-  --color-destructive-foreground: #ffffff;
-
-  --color-success: #10b981;
-  --color-success-foreground: #ffffff;
-
-  --color-border: #e2e8f0;
-  --color-input: #e2e8f0;
-  --color-ring: #D9A019;
-
-  /* -- Sidebar Navy -- */
-  --color-sidebar: #0f172a;
-  --color-sidebar-foreground: #f8fafc;
-  --color-sidebar-primary: #D9A019;
-  --color-sidebar-primary-foreground: #ffffff;
-  --color-sidebar-accent: #1e293b;
-  --color-sidebar-accent-foreground: #ffffff;
-  --color-sidebar-border: #1e293b;
-  --color-sidebar-ring: #D9A019;
-
-  /* -- Radii Torazen -- */
-  --radius: 0.75rem;
-  --radius-lg: 1rem;
-  --radius-md: 0.75rem;
-  --radius-sm: 0.5rem;
-  --radius-xl: 1.25rem;
-  --radius-2xl: 2rem;
+  --radius: 1rem;
 }
 
 @font-face {
@@ -74,9 +60,48 @@
   --destructive-foreground: #ffffff;
   --border: #e2e8f0;
   --input: #e2e8f0;
-  --ring: #FFD700;
-  --radius: 1rem;
+  --ring: #D9A019;
   --font-sans: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+
+  --sidebar: #0f172a;
+  --sidebar-foreground: #f8fafc;
+  --sidebar-primary: #D9A019;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #1e293b;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #1e293b;
+  --sidebar-ring: #D9A019;
+}
+
+.dark {
+  --background: #020617;
+  --foreground: #f8fafc;
+  --card: #0f172a;
+  --card-foreground: #f8fafc;
+  --popover: #0a0f1e;
+  --popover-foreground: #f8fafc;
+  --primary: #f8fafc;
+  --primary-foreground: #020617;
+  --secondary: #1e293b;
+  --secondary-foreground: #f8fafc;
+  --muted: #1e293b;
+  --muted-foreground: #94a3b8;
+  --accent: #D9A019;
+  --accent-foreground: #ffffff;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: #1e293b;
+  --input: #1e293b;
+  --ring: #D9A019;
+
+  --sidebar: #010413;
+  --sidebar-foreground: #f8fafc;
+  --sidebar-primary: #D9A019;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #0f172a;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #0f172a;
+  --sidebar-ring: #D9A019;
 }
 
 @layer utilities {
@@ -86,7 +111,7 @@
 
   /* Ombre Signature Torazen */
   .premium-shadow {
-    box-shadow: 
+    box-shadow:
       0 1px 3px rgba(15, 23, 42, 0.05),
       0 10px 25px -5px rgba(15, 23, 42, 0.05),
       0 20px 40px -10px rgba(15, 23, 42, 0.03);
@@ -114,7 +139,7 @@
   .glow-gold {
     box-shadow: 0 0 20px -5px rgba(184, 134, 11, 0.4);
   }
-  
+
   .glow-navy {
     box-shadow: 0 0 20px -5px rgba(15, 23, 42, 0.2);
   }
@@ -124,6 +149,7 @@
       opacity: 0;
       transform: translateY(10px);
     }
+
     to {
       opacity: 1;
       transform: translateY(0);
@@ -137,6 +163,7 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;

@@ -35,7 +35,7 @@ export function FilterBar({
           placeholder={searchPlaceholder}
           value={searchValue}
           onChange={(e) => onSearchChange(e.target.value)}
-          className="pl-12 bg-slate-50/50 border-2 border-primary/80 h-14 rounded-full focus:ring-4 focus:ring-primary/5 transition-all text-[15px] placeholder:text-slate-400 w-full"
+          className="pl-12 bg-slate-100/80 dark:bg-slate-800/40 border-slate-200/50 dark:border-slate-700/50 h-14 rounded-full focus:ring-4 focus:ring-primary/5 transition-all text-[15px] placeholder:text-slate-400 w-full"
         />
       </div>
 
@@ -45,7 +45,7 @@ export function FilterBar({
             key={filter.value}
             variant="ghost"
             size="sm"
-            className="h-14 px-6 rounded-2xl gap-3 bg-slate-50/80 hover:bg-slate-100 text-slate-700 text-[15px] font-normal shrink-0 transition-colors"
+            className="h-14 px-6 rounded-2xl gap-3 bg-slate-100/80 dark:bg-slate-800/40 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-[15px] font-normal shrink-0 transition-colors border border-slate-200/50 dark:border-slate-700/50"
           >
             {filter.label}
             <ChevronDown className="h-4 w-4 text-slate-500" />

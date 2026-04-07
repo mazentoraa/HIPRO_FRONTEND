@@ -35,7 +35,7 @@ export function SearchInput({
         placeholder={placeholder}
         value={value}
         onChange={(e) => setValue(e.target.value)}
-        className="w-full h-12 pl-12 pr-4 bg-slate-50/50 border-2 border-primary/20 rounded-full text-[15px] focus:outline-none focus:border-primary/80 focus:bg-white transition-all placeholder:text-slate-400"
+        className="w-full h-12 pl-12 pr-4 bg-slate-100/80 dark:bg-slate-800/40 border border-slate-200/50 dark:border-slate-700/50 rounded-full text-[15px] focus:outline-none transition-all placeholder:text-slate-400"
       />
     </div>
   );
