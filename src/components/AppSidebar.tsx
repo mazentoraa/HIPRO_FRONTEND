@@ -21,15 +21,15 @@ import { useAuth } from "@/features/auth/hooks/useAuth";
 import { useSidebar } from "@/components/layout/SidebarContext";
 
 const navItems = [
-  { title: "Dashboard", icon: LayoutDashboard, path: "/" },
+  { title: "Tableau de bord", icon: LayoutDashboard, path: "/dashboard" },
   { title: "Clients", icon: Users, path: "/clients" },
-  { title: "Trainers", icon: GraduationCap, path: "/trainers" },
+  { title: "Entraîneurs", icon: GraduationCap, path: "/trainers" },
   { title: "Sessions", icon: CalendarDays, path: "/sessions" },
-  { title: "Attendance", icon: ClipboardCheck, path: "/attendance" },
-  { title: "Payments", icon: CreditCard, path: "/payments" },
-  { title: "Reports", icon: BarChart3, path: "/reports" },
+  { title: "Présences", icon: ClipboardCheck, path: "/attendance" },
+  { title: "Paiements", icon: CreditCard, path: "/payments" },
+  { title: "Rapports", icon: BarChart3, path: "/reports" },
   { title: "Communication", icon: MessageSquare, path: "/communication" },
-  { title: "Settings", icon: Settings, path: "/settings" },
+  { title: "Paramètres", icon: Settings, path: "/settings" },
 ];
 
 export function AppSidebar() {
@@ -60,7 +60,7 @@ export function AppSidebar() {
       >
         {/* Logo */}
         <div className="flex items-center h-16 px-4 border-b border-sidebar-border">
-          <div className="flex items-center gap-3 min-w-0">
+          <Link href="/dashboard" className="flex items-center gap-3 min-w-0 hover:opacity-80 transition-opacity">
             <div className="w-9 h-9 rounded-xl bg-sidebar-primary flex items-center justify-center shrink-0">
               <span className="text-sidebar-primary-foreground font-bold text-sm">HI</span>
             </div>
@@ -70,7 +70,7 @@ export function AppSidebar() {
                 <p className="text-sidebar-foreground/70 text-[10px] uppercase tracking-widest whitespace-nowrap">Training Center</p>
               </div>
             )}
-          </div>
+          </Link>
         </div>
 
         {/* Navigation */}

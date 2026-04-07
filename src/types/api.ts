@@ -1,1 +1,6 @@
-// This file is for shared types (what data looks like)
+export type PaginatedResponse<T> = {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: T[];
+};

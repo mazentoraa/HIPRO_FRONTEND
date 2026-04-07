@@ -3,29 +3,41 @@
 import { usePathname } from 'next/navigation';
 import { AppSidebar } from '@/components/AppSidebar';
 import { AuthProvider } from '@/features/auth/context/AuthContext';
-import { useAuth } from '@/features/auth/hooks/useAuth';
 import { Toaster } from '@/components/ui/toaster';
 import { SidebarProvider } from '@/components/layout/SidebarContext';
 import { TopBar } from '@/components/TopBar';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5, // 5 minutes
+      retry: 1,
+    },
+  },
+});
 
 export function LayoutWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const isLoginPage = pathname === '/login';
+  // The login page is now at the root '/'
+  const isLoginPage = pathname === '/';
 
   return (
-    <AuthProvider>
-      <SidebarProvider>
-        <div className="flex min-h-screen w-full bg-background font-sans antialiased">
-          {!isLoginPage && <AppSidebar />}
-          <main className={isLoginPage ? "w-full" : "flex-1 overflow-auto flex flex-col"}>
-            {!isLoginPage && <TopBar />}
-            <div className={isLoginPage ? "" : "p-6 max-w-7xl mx-auto w-full flex-1"}>
-              {children}
-            </div>
-          </main>
-        </div>
-      </SidebarProvider>
-      <Toaster />
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <SidebarProvider>
+          <div className="flex min-h-screen w-full bg-background font-sans antialiased">
+            {!isLoginPage && <AppSidebar />}
+            <main className={isLoginPage ? "w-full" : "flex-1 overflow-auto flex flex-col"}>
+              {!isLoginPage && <TopBar />}
+              <div className={isLoginPage ? "" : "w-full flex-1"}>
+                {children}
+              </div>
+            </main>
+          </div>
+        </SidebarProvider>
+        <Toaster />
+      </AuthProvider>
+    </QueryClientProvider>
   );
 }

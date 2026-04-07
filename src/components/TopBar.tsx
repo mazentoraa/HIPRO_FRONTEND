@@ -9,9 +9,9 @@ import { useState, useEffect } from "react";
 
 function getGreeting() {
   const h = new Date().getHours();
-  if (h < 12) return "Good morning";
-  if (h < 18) return "Good afternoon";
-  return "Good evening";
+  if (h < 12) return "Bonjour";
+  if (h < 18) return "Bon après-midi";
+  return "Bonsoir";
 }
 
 export function TopBar() {
@@ -47,7 +47,7 @@ export function TopBar() {
   };
 
   return (
-    <header className="h-16 border-b border-border bg-card/80 backdrop-blur-sm flex items-center px-4 md:px-6 gap-4 sticky top-0 z-30">
+    <header className="h-16 border-b border-border bg-card/80 backdrop-blur-sm flex items-center px-2 md:px-4 gap-4 sticky top-0 z-30">
       <Button
         variant="ghost"
         size="icon"
@@ -61,7 +61,7 @@ export function TopBar() {
         <div className="relative max-w-md w-full hidden sm:block">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Search clients, trainers, sessions..."
+            placeholder="Rechercher clients, entraîneurs, sessions..."
             className="pl-10 bg-secondary/50 border-0 rounded-full h-10 text-foreground"
           />
         </div>

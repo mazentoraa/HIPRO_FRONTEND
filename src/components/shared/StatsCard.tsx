@@ -8,7 +8,7 @@ interface StatsCardProps {
   change: string;
   changeType: "positive" | "negative";
   icon: LucideIcon;
-  accent: "primary" | "gold" | "success";
+  accent: "primary" | "gold" | "success" | "danger";
 }
 
 export function StatsCard({
@@ -20,29 +20,31 @@ export function StatsCard({
   accent,
 }: StatsCardProps) {
   const accentStyles = {
-    primary: "bg-primary/10 text-primary",
-    gold: "bg-accent/10 text-accent",
-    success: "bg-success/10 text-success",
+    primary: "bg-blue-50 text-blue-600",
+    gold: "bg-[#FDF2D9] text-[#D9A019]",
+    success: "bg-emerald-50 text-emerald-600",
+    danger: "bg-rose-50 text-rose-600",
   };
 
   return (
-    <div className="premium-shadow rounded-2xl border border-border/50 bg-card p-6 transition-all hover:scale-[1.02]">
+    <div className="group rounded-[2rem] border border-slate-100 bg-white p-7 transition-all duration-300 hover:shadow-xl hover:shadow-slate-200/50">
       <div className="flex items-start justify-between">
-        <div>
-          <p className="text-sm font-medium text-muted-foreground">{title}</p>
-          <h3 className="mt-2 text-2xl font-bold tracking-tight">{value}</h3>
+        <div className="space-y-1">
+          <p className="text-[13px] font-normal text-slate-500">{title}</p>
+          <h3 className="text-[32px] font-semibold tracking-tight text-slate-900">{value}</h3>
         </div>
-        <div className={cn("flex h-12 w-12 items-center justify-center rounded-xl shadow-sm", accentStyles[accent])}>
-          <Icon className="h-6 w-6" />
+        <div className={cn(
+          "flex h-14 w-14 items-center justify-center rounded-full transition-transform duration-500 group-hover:scale-110",
+          accentStyles[accent]
+        )}>
+          <Icon className="h-7 w-7" />
         </div>
       </div>
-      <div className="mt-4 flex items-center gap-1.5">
-        <span
-          className={cn(
-            "text-xs font-semibold",
-            changeType === "positive" ? "text-success" : "text-destructive"
-          )}
-        >
+      <div className="mt-3">
+        <span className={cn(
+          "text-[13px] font-normal",
+          changeType === "positive" ? "text-emerald-500" : "text-rose-500"
+        )}>
           {change}
         </span>
       </div>

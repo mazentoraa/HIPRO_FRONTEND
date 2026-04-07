@@ -6,7 +6,7 @@ import { Button } from '../../../components/ui/button';
 import { Input } from '../../../components/ui/input';
 import { Label } from '../../../components/ui/label';
 import { useToast } from '../../../lib/hooks/use-toast';
-import { useAuth } from "@/features/auth/hooks/useAuth";
+import { useAuth } from '../../../lib/hooks/useAuth';
 import {
   Zap,
   MousePointerClick,
