@@ -9,6 +9,7 @@ interface StatsCardProps {
   changeType: "positive" | "negative";
   icon: LucideIcon;
   accent: "primary" | "gold" | "success" | "danger";
+  onClick?: () => void;
 }
 
 export function StatsCard({
@@ -18,6 +19,7 @@ export function StatsCard({
   changeType,
   icon: Icon,
   accent,
+  onClick,
 }: StatsCardProps) {
   const accentStyles = {
     primary: "bg-blue-50 text-blue-600",
@@ -27,7 +29,13 @@ export function StatsCard({
   };
 
   return (
-    <div className="group rounded-[2rem] border border-slate-100 bg-white p-7 transition-all duration-300 hover:shadow-xl hover:shadow-slate-200/50">
+    <div 
+      onClick={onClick}
+      className={cn(
+        "group rounded-[2rem] border border-slate-100 bg-white p-7 transition-all duration-300 hover:shadow-xl hover:shadow-slate-200/50",
+        onClick && "cursor-pointer hover:scale-[1.01] active:scale-[0.98]"
+      )}
+    >
       <div className="flex items-start justify-between">
         <div className="space-y-1">
           <p className="text-[13px] font-normal text-slate-500">{title}</p>

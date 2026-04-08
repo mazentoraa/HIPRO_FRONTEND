@@ -53,22 +53,17 @@ export function ClientList() {
   const columns: Column<IClient>[] = [
     {
       header: "Client",
-      className: "min-w-[220px]",
+      className: "min-w-[150px]",
       cell: (client: IClient) => (
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2">
           <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#E0E7FF] text-[14px] font-medium text-[#4338CA]">
             {client.first_name?.[0]}{client.last_name?.[0]}
           </div>
-          <span className="font-medium text-[#1E293B] text-[16px] tracking-tight">
+          <span className="font-medium text-[#1E293B] text-[15px] tracking-tight">
             {client.first_name} {client.last_name}
           </span>
         </div>
       ),
-    },
-    {
-      header: "Parent",
-      className: "hidden lg:table-cell text-[#64748B]",
-      cell: (client: IClient) => (client.is_minor ? client.first_parent_name : "—"),
     },
     {
       header: "Téléphone",
@@ -90,8 +85,8 @@ export function ClientList() {
       className: "hidden lg:table-cell",
       cell: (client: IClient) => (
         <div className="flex items-center gap-3">
-          <div className="w-24 h-2 bg-slate-100 rounded-full overflow-hidden shrink-0">
-            <div 
+          <div className="w-16 h-2 bg-slate-100 rounded-full overflow-hidden shrink-0">
+            <div
               className="h-full bg-[#2563EB] rounded-full transition-all duration-1000"
               style={{ width: `${client.attendance || 0}%` }}
             />
@@ -124,29 +119,29 @@ export function ClientList() {
       className: "text-right",
       cell: (client: IClient) => (
         <div
-          className="flex items-center justify-end gap-5"
+          className="flex items-center justify-end gap-3"
           onClick={(e) => e.stopPropagation()}
         >
           <button
             title="Voir"
             onClick={() => router.push(`/clients/${client.id}`)}
-            className="text-[#1E293B] hover:text-[#D9A019] hover:scale-110 transition-all"
+            className="text-[#1E293B] hover:text-[#D9A019] transition-all"
           >
-            <Eye className="h-5 w-5" />
+            <Eye className="h-4 w-4" />
           </button>
           <button
             title="Modifier"
             onClick={() => handleOpenEdit(client)}
-            className="text-[#1E293B] hover:text-[#D9A019] hover:scale-110 transition-all"
+            className="text-[#1E293B] hover:text-[#D9A019] transition-all"
           >
-            <Edit className="h-5 w-5" />
+            <Edit className="h-4 w-4" />
           </button>
           <button
             title="Supprimer"
             onClick={() => setClientToDelete(client)}
-            className="text-[#1E293B] hover:text-red-500 hover:scale-110 transition-all"
+            className="text-[#1E293B] hover:text-red-500 transition-all"
           >
-            <Trash2 className="h-5 w-5" />
+            <Trash2 className="h-4 w-4" />
           </button>
         </div>
       ),
@@ -185,43 +180,43 @@ export function ClientList() {
         </div>
       </div>
       <div className="flex flex-col xl:flex-row xl:items-center justify-between py-4 group gap-4 w-full">
-          <FilterBar
-            searchPlaceholder="Rechercher des clients..."
-            searchValue={search}
-            onSearchChange={(val: string) => {
-              setSearch(val);
-              setPage(1);
-            }}
-            filters={[
-                {
-                    label: "Programme",
-                    value: "program",
-                    options: [
-                        { label: "Natation", value: "swimming" },
-                        { label: "Mathématiques", value: "math" },
-                        { label: "Yoga", value: "yoga" },
-                        { label: "Art", value: "art" },
-                    ],
-                },
-                {
-                    label: "Paiement",
-                    value: "payment",
-                    options: [
-                        { label: "Payé", value: "paid" },
-                        { label: "En attente", value: "pending" },
-                        { label: "Retard", value: "overdue" },
-                    ],
-                },
-            ]}
-          />
+        <FilterBar
+          searchPlaceholder="Rechercher des clients..."
+          searchValue={search}
+          onSearchChange={(val: string) => {
+            setSearch(val);
+            setPage(1);
+          }}
+          filters={[
+            {
+              label: "Programme",
+              value: "program",
+              options: [
+                { label: "Natation", value: "swimming" },
+                { label: "Mathématiques", value: "math" },
+                { label: "Yoga", value: "yoga" },
+                { label: "Art", value: "art" },
+              ],
+            },
+            {
+              label: "Paiement",
+              value: "payment",
+              options: [
+                { label: "Payé", value: "paid" },
+                { label: "En attente", value: "pending" },
+                { label: "Retard", value: "overdue" },
+              ],
+            },
+          ]}
+        />
 
-        <div className="flex items-center gap-4 bg-white/50 p-1.5 rounded-full border border-slate-100/50">
+        <div className="flex items-center gap-2 bg-white/50 p-1 rounded-full border border-slate-100/50">
           <Button
             variant="ghost"
             size="icon"
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={page === 1 || isLoading}
-            className="h-9 w-9 rounded-full text-slate-400 hover:text-[#D9A019] hover:bg-white"
+            className="h-8 w-8 rounded-full text-slate-400 hover:text-[#D9A019] hover:bg-white"
           >
             <ChevronLeft className="h-4 w-4" />
           </Button>
@@ -288,7 +283,7 @@ export function ClientList() {
         confirmLabel="Supprimer"
       />
 
-      <ClientFormModal 
+      <ClientFormModal
         isOpen={isFormModalOpen}
         onClose={() => setIsFormModalOpen(false)}
         initialData={clientToEdit}

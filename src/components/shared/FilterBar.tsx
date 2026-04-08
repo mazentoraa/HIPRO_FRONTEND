@@ -39,7 +39,7 @@ export function FilterBar({
         />
       </div>
 
-      <div className="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
+      <div className="flex items-center gap-2 overflow-x-auto overflow-y-hidden pb-1 sm:pb-0 scrollbar-none">
         {filters.map((filter) => (
           <Button
             key={filter.value}

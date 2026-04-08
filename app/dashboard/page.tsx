@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { StatsCard } from "@/components/shared/StatsCard";
 import { StatusBadge } from "@/components/shared/StatusBadge";
 import { Button } from "@/components/ui/button";
@@ -129,6 +130,7 @@ const upcomingSessions = [
 ];
 
 export default function DashboardPage() {
+  const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
@@ -168,6 +170,7 @@ export default function DashboardPage() {
           changeType="positive"
           icon={Users}
           accent="primary"
+          onClick={() => router.push("/clients")}
         />
 
         <StatsCard

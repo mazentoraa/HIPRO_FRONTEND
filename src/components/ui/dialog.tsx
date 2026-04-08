@@ -37,7 +37,7 @@ function DialogOverlay({
     <DialogPrimitive.Overlay
       data-slot="dialog-overlay"
       className={cn(
-        "fixed inset-0 isolate z-50 bg-black/30 backdrop-blur-[2px] duration-300 data-open:animate-in data-open:fade-in-0 data-closed:animate-out data-closed:fade-out-0",
+        "fixed inset-0 isolate z-50 bg-[#0F172A]/40 backdrop-blur-[2px] duration-500 data-open:animate-in data-open:fade-in-0 data-closed:animate-out data-closed:fade-out-0",
         className
       )}
       {...props}
@@ -59,7 +59,7 @@ function DialogContent({
       <DialogPrimitive.Content
         data-slot="dialog-content"
         className={cn(
-          "fixed top-1/2 left-1/2 z-50 grid w-full -translate-x-1/2 -translate-y-1/2 gap-4 rounded-xl bg-popover p-4 text-sm text-popover-foreground shadow-lg duration-100 outline-none data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
+          "fixed top-1/2 left-1/2 z-50 grid w-full -translate-x-1/2 -translate-y-1/2 gap-4 rounded-2xl bg-popover p-0 text-sm text-popover-foreground shadow-2xl duration-300 ease-out outline-none data-open:animate-in data-open:fade-in-0 data-open:zoom-in-[0.98] data-open:slide-in-from-bottom-2 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-[0.98] data-closed:slide-out-to-bottom-2",
           className
         )}
         {...props}
@@ -68,9 +68,9 @@ function DialogContent({
         {showCloseButton && (
           <DialogPrimitive.Close data-slot="dialog-close" asChild>
             <button
-              className="absolute top-4 right-4 p-2 hover:bg-slate-100 rounded-full transition-colors"
+              className="absolute top-5 right-5 p-2 bg-slate-100/50 hover:bg-slate-100 rounded-full transition-all duration-200 z-10"
             >
-              <XIcon className="h-5 w-5 text-gray-900" />
+              <XIcon className="h-4 w-4 text-slate-500" />
               <span className="sr-only">Close</span>
             </button>
           </DialogPrimitive.Close>

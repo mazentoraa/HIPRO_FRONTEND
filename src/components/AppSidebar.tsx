@@ -15,6 +15,7 @@ import {
   Settings,
   ChevronLeft,
   LogOut,
+  Sparkles,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/features/auth/hooks/useAuth";
@@ -59,22 +60,24 @@ export function AppSidebar() {
         )}
       >
         {/* Logo */}
-        <div className="flex items-center h-16 px-4 border-b border-sidebar-border">
+        <div className="flex items-center h-20 px-4 border-b border-sidebar-border">
           <Link href="/dashboard" className="flex items-center gap-3 min-w-0 hover:opacity-80 transition-opacity">
-            <div className="w-9 h-9 rounded-xl bg-sidebar-primary flex items-center justify-center shrink-0">
-              <span className="text-sidebar-primary-foreground font-bold text-sm">HI</span>
+            <div className="w-11 h-11 rounded-xl bg-[#FB9600] flex items-center justify-center shrink-0 shadow-lg shadow-orange-500/20">
+              <Sparkles className="w-6 h-6 text-[#01142A]" />
             </div>
             {!collapsed && (
-              <div>
-                <h1 className="text-sidebar-foreground font-bold text-lg leading-tight whitespace-nowrap">HiPro</h1>
-                <p className="text-sidebar-foreground/70 text-[10px] uppercase tracking-widest whitespace-nowrap">Training Center</p>
+              <div className="flex flex-col">
+                <h1 className="text-sidebar-foreground font-bold text-xl leading-tight whitespace-nowrap">
+                  HI<span className="text-[#FB9600]">PRO</span>
+                </h1>
+                <p className="text-sidebar-foreground/70 text-[10px] uppercase tracking-widest whitespace-nowrap font-medium">Training Center</p>
               </div>
             )}
           </Link>
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 py-4 px-3 space-y-1 overflow-y-auto">
+        <nav className="flex-1 py-4 px-3 space-y-1 overflow-y-auto scrollbar-hide">
           {navItems.map((item) => {
             const isActive = pathname === item.path ||
               (item.path !== "/" && pathname.startsWith(item.path));

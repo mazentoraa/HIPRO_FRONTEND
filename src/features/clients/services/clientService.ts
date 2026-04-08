@@ -83,7 +83,7 @@ const MOCK_CLIENTS: IClient[] = [
 ];
 
 const MOCK_DELETED_CLIENTS: IClient[] = [
-    {
+  {
     id: 4,
     first_name: "Bob",
     last_name: "Williams",
@@ -121,17 +121,17 @@ export const clientService = {
     // return data;
 
     await new Promise(resolve => setTimeout(resolve, 500));
-    
+
     let filteredClients = [...MOCK_CLIENTS];
     if (search) {
-        const searchLower = search.toLowerCase();
-        filteredClients = filteredClients.filter(c => 
-            c.first_name.toLowerCase().includes(searchLower) ||
-            c.last_name.toLowerCase().includes(searchLower) ||
-            c.email.toLowerCase().includes(searchLower)
-        );
+      const searchLower = search.toLowerCase();
+      filteredClients = filteredClients.filter(c =>
+        c.first_name.toLowerCase().includes(searchLower) ||
+        c.last_name.toLowerCase().includes(searchLower) ||
+        c.email.toLowerCase().includes(searchLower)
+      );
     }
-    
+
     // Simulate pagination for mock data
     const itemsPerPage = 10;
     const currentPage = page || 1;
@@ -139,10 +139,10 @@ export const clientService = {
     const paginatedClients = filteredClients.slice(startIndex, startIndex + itemsPerPage);
 
     return {
-        count: filteredClients.length,
-        next: null,
-        previous: null,
-        results: paginatedClients
+      count: filteredClients.length,
+      next: null,
+      previous: null,
+      results: paginatedClients
     };
   },
 
@@ -157,23 +157,23 @@ export const clientService = {
     // const { data } = await apiClient.get<PaginatedResponse<IClient>>("/clients/deleted/", { params });
     // return data;
 
-     await new Promise(resolve => setTimeout(resolve, 500));
-     
-     let filteredClients = [...MOCK_DELETED_CLIENTS];
-     if (search) {
-         const searchLower = search.toLowerCase();
-         filteredClients = filteredClients.filter(c => 
-             c.first_name.toLowerCase().includes(searchLower) ||
-             c.last_name.toLowerCase().includes(searchLower) ||
-             c.email.toLowerCase().includes(searchLower)
-         );
-     }
-     
-     return {
-        count: filteredClients.length,
-        next: null,
-        previous: null,
-        results: filteredClients
+    await new Promise(resolve => setTimeout(resolve, 500));
+
+    let filteredClients = [...MOCK_DELETED_CLIENTS];
+    if (search) {
+      const searchLower = search.toLowerCase();
+      filteredClients = filteredClients.filter(c =>
+        c.first_name.toLowerCase().includes(searchLower) ||
+        c.last_name.toLowerCase().includes(searchLower) ||
+        c.email.toLowerCase().includes(searchLower)
+      );
+    }
+
+    return {
+      count: filteredClients.length,
+      next: null,
+      previous: null,
+      results: filteredClients
     };
   },
 
@@ -183,13 +183,13 @@ export const clientService = {
   async getClient(id: number): Promise<IClient> {
     // const { data } = await apiClient.get<IClient>(`/clients/${id}/`);
     // return data;
-    
+
     await new Promise(resolve => setTimeout(resolve, 300));
     const allClients = [...MOCK_CLIENTS, ...MOCK_DELETED_CLIENTS];
     const client = allClients.find(c => c.id === id);
-    
+
     if (!client) {
-        throw new Error("Client not found");
+      throw new Error("Client not found");
     }
     return client;
   },
@@ -200,18 +200,18 @@ export const clientService = {
   async createClient(clientData: Partial<IClient>): Promise<IClient> {
     // const { data } = await apiClient.post<IClient>("/clients/", clientData);
     // return data;
-    
+
     await new Promise(resolve => setTimeout(resolve, 500));
-    
+
     const newClient: IClient = {
-        ...(clientData as IClient),
-        id: Math.max(...MOCK_CLIENTS.map(c => c.id), 0) + 1,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-        is_deleted: false,
-        deleted_at: null,
+      ...(clientData as IClient),
+      id: Math.max(...MOCK_CLIENTS.map(c => c.id), 0) + 1,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      is_deleted: false,
+      deleted_at: null,
     };
-    
+
     MOCK_CLIENTS.push(newClient);
     return newClient;
   },
@@ -222,15 +222,15 @@ export const clientService = {
   async updateClient(id: number, clientData: Partial<IClient>): Promise<IClient> {
     // const { data } = await apiClient.patch<IClient>(`/clients/${id}/`, clientData);
     // return data;
-    
+
     await new Promise(resolve => setTimeout(resolve, 500));
-    
+
     const index = MOCK_CLIENTS.findIndex(c => c.id === id);
     if (index !== -1) {
-       MOCK_CLIENTS[index] = { ...MOCK_CLIENTS[index], ...clientData, updated_at: new Date().toISOString() };
-       return MOCK_CLIENTS[index];
+      MOCK_CLIENTS[index] = { ...MOCK_CLIENTS[index], ...clientData, updated_at: new Date().toISOString() };
+      return MOCK_CLIENTS[index];
     }
-    
+
     throw new Error("Client not found");
   },
 
@@ -239,18 +239,18 @@ export const clientService = {
    */
   async deleteClient(id: number): Promise<void> {
     // await apiClient.delete(`/clients/${id}/`);
-    
+
     await new Promise(resolve => setTimeout(resolve, 500));
-    
+
     const index = MOCK_CLIENTS.findIndex(c => c.id === id);
     if (index !== -1) {
-        const client = MOCK_CLIENTS[index];
-        client.is_deleted = true;
-        client.deleted_at = new Date().toISOString();
-        client.updated_at = new Date().toISOString();
-        
-        MOCK_CLIENTS.splice(index, 1);
-        MOCK_DELETED_CLIENTS.push(client);
+      const client = MOCK_CLIENTS[index];
+      client.is_deleted = true;
+      client.deleted_at = new Date().toISOString();
+      client.updated_at = new Date().toISOString();
+
+      MOCK_CLIENTS.splice(index, 1);
+      MOCK_DELETED_CLIENTS.push(client);
     }
   },
 
@@ -260,19 +260,19 @@ export const clientService = {
   async restoreClient(id: number): Promise<IClient> {
     // const { data } = await apiClient.post<IClient>(`/clients/${id}/restore/`);
     // return data;
-    
+
     await new Promise(resolve => setTimeout(resolve, 500));
     const index = MOCK_DELETED_CLIENTS.findIndex(c => c.id === id);
-    
-    if(index !== -1){
-        const client = MOCK_DELETED_CLIENTS[index];
-        client.is_deleted = false;
-        client.deleted_at = null;
-        client.updated_at = new Date().toISOString();
-        
-        MOCK_DELETED_CLIENTS.splice(index, 1);
-        MOCK_CLIENTS.push(client);
-        return client;
+
+    if (index !== -1) {
+      const client = MOCK_DELETED_CLIENTS[index];
+      client.is_deleted = false;
+      client.deleted_at = null;
+      client.updated_at = new Date().toISOString();
+
+      MOCK_DELETED_CLIENTS.splice(index, 1);
+      MOCK_CLIENTS.push(client);
+      return client;
     }
     throw new Error("Client not found in trash");
   },

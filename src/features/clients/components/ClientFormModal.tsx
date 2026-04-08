@@ -11,6 +11,14 @@ import {
     DialogTitle,
     DialogDescription,
 } from "@/components/ui/dialog";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface ClientFormModalProps {
     isOpen: boolean;
@@ -27,10 +35,10 @@ export function ClientFormModal({ isOpen, onClose, initialData }: ClientFormModa
 
     const [formData, setFormData] = useState<Partial<IClient>>({
         first_name: "", last_name: "", phone: "", email: "", is_minor: false,
-        date_of_birth: "", gender: "Non spécifié",
+        date_of_birth: "", gender: "",
         first_parent_name: "", first_parent_relation: "", first_parent_phone: "", first_parent_email: "",
         second_parent_name: "", second_parent_relation: "", second_parent_phone: "", second_parent_email: "",
-        payment_status: "En attente"
+        payment_status: ""
     });
 
     useEffect(() => {
@@ -39,10 +47,10 @@ export function ClientFormModal({ isOpen, onClose, initialData }: ClientFormModa
         } else {
             setFormData({
                 first_name: "", last_name: "", phone: "", email: "", is_minor: false,
-                date_of_birth: "", gender: "Non spécifié",
+                date_of_birth: "", gender: "",
                 first_parent_name: "", first_parent_relation: "", first_parent_phone: "", first_parent_email: "",
                 second_parent_name: "", second_parent_relation: "", second_parent_phone: "", second_parent_email: "",
-                payment_status: "En attente"
+                payment_status: ""
             });
         }
     }, [initialData, isOpen]);
@@ -61,13 +69,18 @@ export function ClientFormModal({ isOpen, onClose, initialData }: ClientFormModa
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
+    const handleSelectChange = (name: string, value: string) => {
+        setFormData(prev => ({ ...prev, [name]: value }));
+    };
+
     return (
         <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
             <DialogContent
                 className="w-full max-w-2xl p-0 bg-white border border-gray-100 shadow-2xl rounded-2xl overflow-hidden"
                 style={{ fontFamily: "'Inter', sans-serif" }}
             >
-                <div className="max-h-[90vh] overflow-y-auto">
+                <ScrollArea className="h-full max-h-[85vh] w-full" type="always">
+                    <div className="px-1">
                     {/* Header */}
                     <div className="px-8 pt-8 pb-6">
                         <DialogTitle className="text-[22px] font-semibold text-gray-900 leading-tight">
@@ -121,14 +134,14 @@ export function ClientFormModal({ isOpen, onClose, initialData }: ClientFormModa
                                 </FormField>
                                 <FormField label="Genre">
                                     <SelectInput
-                                        name="gender"
-                                        value={formData.gender || "Non spécifié"}
-                                        onChange={handleChange}
-                                    >
-                                        <option value="Non spécifié">Sélectionner le genre</option>
-                                        <option value="Féminin">Féminin</option>
-                                        <option value="Masculin">Masculin</option>
-                                    </SelectInput>
+                                        value={formData.gender || ""}
+                                        onValueChange={(val) => handleSelectChange("gender", val)}
+                                        placeholder="Choisir le genre"
+                                        options={[
+                                            { label: "Féminin", value: "Féminin" },
+                                            { label: "Masculin", value: "Masculin" }
+                                        ]}
+                                    />
                                 </FormField>
                             </div>
 
@@ -137,29 +150,28 @@ export function ClientFormModal({ isOpen, onClose, initialData }: ClientFormModa
 
                                 <FormField label="Programme" required>
                                     <SelectInput
-                                        name="program"
                                         value={(formData as any).program || ""}
-                                        onChange={handleChange}
-                                        required
-                                    >
-                                        <option value="">Choisir un programme</option>
-                                        <option value="Natation">Natation</option>
-                                        <option value="Mathématiques">Mathématiques</option>
-                                        <option value="Yoga">Yoga</option>
-                                        <option value="Art">Art</option>
-                                    </SelectInput>
+                                        onValueChange={(val) => handleSelectChange("program", val)}
+                                        placeholder="Choisir un programme"
+                                        options={[
+                                            { label: "Natation", value: "Natation" },
+                                            { label: "Mathématiques", value: "Mathématiques" },
+                                            { label: "Yoga", value: "Yoga" },
+                                            { label: "Art", value: "Art" }
+                                        ]}
+                                    />
                                 </FormField>
 
                                 <FormField label="Statut de Paiement" required>
                                     <SelectInput
-                                        name="payment_status"
                                         value={formData.payment_status || "En attente"}
-                                        onChange={handleChange}
-                                    >
-                                        <option value="Payé">Payé</option>
-                                        <option value="En attente">En attente</option>
-                                        <option value="Retard">En retard</option>
-                                    </SelectInput>
+                                        onValueChange={(val) => handleSelectChange("payment_status", val)}
+                                        options={[
+                                            { label: "Payé", value: "Payé" },
+                                            { label: "En attente", value: "En attente" },
+                                            { label: "En retard", value: "Retard" }
+                                        ]}
+                                    />
                                 </FormField>
                             </div>
                         </div>
@@ -218,15 +230,15 @@ export function ClientFormModal({ isOpen, onClose, initialData }: ClientFormModa
                                         </FormField>
                                         <FormField label="Relation">
                                             <SelectInput
-                                                name="first_parent_relation"
                                                 value={formData.first_parent_relation || ""}
-                                                onChange={handleChange}
-                                            >
-                                                <option value="">Sélectionner la relation</option>
-                                                <option value="Mère">Mère</option>
-                                                <option value="Père">Père</option>
-                                                <option value="Autre">Autre</option>
-                                            </SelectInput>
+                                                onValueChange={(val) => handleSelectChange("first_parent_relation", val)}
+                                                placeholder="Sélectionner la relation"
+                                                options={[
+                                                    { label: "Mère", value: "Mère" },
+                                                    { label: "Père", value: "Père" },
+                                                    { label: "Autre", value: "Autre" }
+                                                ]}
+                                            />
                                         </FormField>
                                         <FormField label="Téléphone">
                                             <TextInput
@@ -261,15 +273,15 @@ export function ClientFormModal({ isOpen, onClose, initialData }: ClientFormModa
                                             </FormField>
                                             <FormField label="Relation">
                                                 <SelectInput
-                                                    name="second_parent_relation"
                                                     value={formData.second_parent_relation || ""}
-                                                    onChange={handleChange}
-                                                >
-                                                    <option value="">Sélectionner la relation</option>
-                                                    <option value="Mère">Mère</option>
-                                                    <option value="Père">Père</option>
-                                                    <option value="Autre">Autre</option>
-                                                </SelectInput>
+                                                    onValueChange={(val) => handleSelectChange("second_parent_relation", val)}
+                                                    placeholder="Sélectionner la relation"
+                                                    options={[
+                                                        { label: "Mère", value: "Mère" },
+                                                        { label: "Père", value: "Père" },
+                                                        { label: "Autre", value: "Autre" }
+                                                    ]}
+                                                />
                                             </FormField>
                                             <FormField label="Téléphone">
                                                 <TextInput
@@ -315,6 +327,7 @@ export function ClientFormModal({ isOpen, onClose, initialData }: ClientFormModa
                         </div>
                     </form>
                 </div>
+            </ScrollArea>
             </DialogContent>
         </Dialog>
     );
@@ -332,7 +345,7 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
 
 function FormField({ label, children, required = false }: { label: string; children: React.ReactNode; required?: boolean }) {
     return (
-        <div className="flex flex-col gap-1.5">
+        <div className="flex flex-col gap-1.5 focus-within:ring-0">
             <label className="text-[13px] font-medium text-gray-700 leading-none">
                 {label} {required && <span className="text-red-400">*</span>}
             </label>
@@ -346,32 +359,37 @@ function TextInput({ className = "", ...props }: React.InputHTMLAttributes<HTMLI
         <input
             {...props}
             className={`
-                w-full h-11 bg-gray-50 border border-gray-100 rounded-xl px-4
-                text-[14px] text-gray-900 placeholder:text-gray-300
-                focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-gray-200
-                transition-all
-                \${className}
+                w-full h-12 bg-slate-50/50 border border-slate-200/60 rounded-xl px-4
+                text-[15px] text-slate-900 placeholder:text-slate-300
+                focus:outline-none focus:ring-4 focus:ring-primary/5 focus:border-primary/20
+                hover:border-primary/20 hover:bg-white
+                transition-all duration-300
+                ${className}
             `}
         />
     );
 }
 
-function SelectInput({ children, className = "", ...props }: React.SelectHTMLAttributes<HTMLSelectElement>) {
+interface SelectInputProps {
+    value: string;
+    onValueChange: (value: string) => void;
+    options: { label: string; value: string }[];
+    placeholder?: string;
+}
+
+function SelectInput({ value, onValueChange, options, placeholder }: SelectInputProps) {
     return (
-        <div className="relative">
-            <select
-                {...props}
-                className={`
-                    w-full h-11 bg-gray-50 border border-gray-100 rounded-xl px-4 pr-10
-                    text-[14px] text-gray-900 appearance-none cursor-pointer
-                    focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-gray-200
-                    transition-all
-                    \${className}
-                `}
-            >
-                {children}
-            </select>
-            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
-        </div>
+        <Select value={value} onValueChange={onValueChange}>
+            <SelectTrigger className="w-full h-12 bg-slate-50/50 border border-slate-200/60 rounded-xl px-4 text-[15px] text-slate-900 hover:bg-white hover:border-primary/20 transition-all duration-300 focus:ring-4 focus:ring-primary/5 focus:border-primary/20 outline-none">
+                <SelectValue placeholder={placeholder} />
+            </SelectTrigger>
+            <SelectContent className="bg-white border border-slate-100 shadow-2xl rounded-2xl p-1.5">
+                {options.map((opt) => (
+                    <SelectItem key={opt.value} value={opt.value}>
+                        {opt.label}
+                    </SelectItem>
+                ))}
+            </SelectContent>
+        </Select>
     );
 }

@@ -49,7 +49,7 @@ export function DataTable<T>({
               {columns.map((column, idx) => (
                 <TableHead
                   key={idx}
-                  className={cn("text-[#64748B] font-medium text-[15px] py-6 px-8", column.headerClassName || column.className)}
+                  className={cn("text-[#64748B] font-medium text-[14px] py-4 px-3", column.headerClassName || column.className)}
                 >
                   <div className="h-4 w-20 bg-slate-200 animate-pulse rounded-full" />
                 </TableHead>
@@ -60,7 +60,7 @@ export function DataTable<T>({
             {[...Array(5)].map((_, i) => (
               <TableRow key={i} className="border-b border-slate-50">
                 {columns.map((_, j) => (
-                  <TableCell key={j} className="py-6 px-8">
+                  <TableCell key={j} className="py-4 px-3">
                     <div className="h-4 w-full bg-slate-100 animate-pulse rounded-full" />
                   </TableCell>
                 ))}
@@ -80,7 +80,7 @@ export function DataTable<T>({
             {columns.map((column, idx) => (
               <TableHead
                 key={idx}
-                className={cn("text-[#64748B] font-medium text-[15px] py-6 px-8", column.headerClassName || column.className)}
+                className={cn("text-[#64748B] font-medium text-[14px] py-4 px-3", column.headerClassName || column.className)}
               >
                 {column.header}
               </TableHead>
@@ -100,12 +100,12 @@ export function DataTable<T>({
                 onClick={() => onRowClick?.(item)}
               >
                 {columns.map((column, colIdx) => (
-                  <TableCell key={colIdx} className={cn("py-5 px-8 text-[#1E293B] text-[16px]", column.className)}>
+                  <TableCell key={colIdx} className={cn("py-4 px-3 text-[#1E293B] text-[15px]", column.className)}>
                     {column.cell
                       ? column.cell(item)
                       : column.accessorKey
-                      ? (item[column.accessorKey] as React.ReactNode)
-                      : null}
+                        ? (item[column.accessorKey] as React.ReactNode)
+                        : null}
                   </TableCell>
                 ))}
               </TableRow>

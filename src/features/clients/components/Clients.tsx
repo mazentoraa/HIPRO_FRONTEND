@@ -303,11 +303,6 @@ export default function ClientsPage() {
                         className: "hidden md:table-cell",
                     },
                     {
-                        header: "Parent",
-                        accessorKey: "parent",
-                        className: "hidden lg:table-cell",
-                    },
-                    {
                         header: "Programme",
                         accessorKey: "program",
                     },
