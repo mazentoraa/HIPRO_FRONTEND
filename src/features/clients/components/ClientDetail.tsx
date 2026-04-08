@@ -19,44 +19,25 @@ import { useClient } from "../hooks/useClients";
 import { IClient } from "../types/client";
 import { ClientFormModal } from "./ClientFormModal";
 
-const MOCK_ICLIENT_DETAIL: IClient = {
-  id: 1,
-  first_name: "Sarah",
-  last_name: "Johnson",
-  email: "sarah.j@example.com",
-  phone: "+1 555 123 456",
-  is_minor: true,
-  is_deleted: false,
-  deleted_at: null,
-  created_at: "2024-01-15T10:00:00Z",
-  updated_at: "2024-03-20T15:30:00Z",
-  age: 12,
-  gender: "Féminin",
-  date_of_birth: "2012-03-15",
-  program: "Natation",
-  payment_status: "Payé",
-  first_parent_name: "Emily Johnson",
-  first_parent_relation: "Mère",
-  first_parent_phone: "+1 555 123 456",
-  first_parent_email: "emily.j@email.com",
-  second_parent_name: null,
-  second_parent_relation: null,
-  second_parent_phone: null,
-  second_parent_email: null,
-};
 
 export default function ClientDetail() {
   const { id } = useParams();
   const router = useRouter();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
-  const { data: backendClient, isLoading } = useClient(Number(id));
-  const client = backendClient || MOCK_ICLIENT_DETAIL;
+  const { data: client, isLoading, error } = useClient(Number(id));
 
   if (isLoading)
     return (
       <div className="p-8 text-center text-gray-400 text-sm">
         Chargement du profil...
+      </div>
+    );
+
+  if (error || !client)
+    return (
+      <div className="p-8 text-center text-red-500 text-sm">
+        Erreur de chargement du profil
       </div>
     );
 
